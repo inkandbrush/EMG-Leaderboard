@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Precision Muscle League Scoreboard</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    select { margin-bottom: 20px; padding: 10px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+  </style>
+</head>
+<body style="background-image: url('images/db.png')" >
+<header style="display: flex; justify-content: space-between; align-items: center; background-color: white; padding: 10px 20px; margin-bottom: 30px;">
+  
+		<img src="images/pml.png" alt="Precision Muscle League" style="height: 60px;">
+		<img src="images/leaderboard.png" alt="Leaderboard" style="height: 60px;">
+		<img src="images/logo.png" alt="logo" style="height: 60px;">
+  </header>
+  
+
+<label for="regionFilter">Filter by Region:</label>  
+
+<select id="regionFilter">
+    <option value="">-- Region --</option>
+     <option value="Chennai">Chennai</option>
+      <option value="Delhi">Delhi</option>
+      <option value="Mumbai">Mumbai</option>
+      <option value="Banglore">Banglore</option>
+  </select>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	
+	
+	
+	
+<button onclick="window.location.href='Entryform.html'"  style="margin-bottom: 20px; padding: 8px 16px; background-color: white; border: 2px solid red; color: black; border-radius: 5px; cursor: pointer;">
+  ⬅ Back to Form
+</button>
+
+  <table id="emgTable" style="background-color: white">
+    <thead>
+      <tr>
+        <th>Sr. No</th>
+        <th>Dr. Name</th>
+        <th>Specialty</th>
+        <th>SSM Name</th>
+        <th>EMG Reading</th>
+        <th>Region</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+<script>
+    window.addEventListener("DOMContentLoaded", function () {
+      const API_URL = "https://api.sheetbest.com/sheets/22dbe1df-d212-4027-bc08-6448a6588189";
+
+      async function fetchData() {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        return data.sort((a, b) => a.EMG - b.EMG);
+      }
+
+      function renderTable(data) {
+  const tbody = document.querySelector("#emgTable tbody");
+  if (!tbody) return console.error("❌ tbody not found");
+  tbody.innerHTML = "";
+  data.forEach((row, index) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${row.DrName}</td>
+      <td>${row.Speciality}</td>
+      <td>${row.SSMName}</td>
+      <td>${row.EMG}</td>
+      <td>${row.Region}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+
+      function populateFilter(data) {
+  const select = document.getElementById("regionFilter");
+
+  // Clear all existing options except the first one
+  select.innerHTML = '<option value="">-- Region --</option>';
+
+  // Create a Set of unique regions
+  const regions = [...new Set(data.map(r => r.Region.trim()))];
+
+  // Append new unique options
+  regions.forEach(region => {
+    const opt = document.createElement("option");
+    opt.value = region;
+    opt.textContent = region;
+    select.appendChild(opt);
+  });
+
+  // Add change listener after repopulating
+  select.addEventListener("change", () => {
+    const filtered = select.value
+      ? data.filter(r => r.Region === select.value)
+      : data;
+    renderTable(filtered);
+  });
+}
+
+
+      async function init() {
+        const data = await fetchData();
+        renderTable(data);
+        populateFilter(data);
+      }
+
+      init();
+    });
+  </script>
+
+</body>
+</html>
