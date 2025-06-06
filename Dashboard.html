@@ -62,7 +62,7 @@ th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
         return data.sort((a, b) => {
           const emgA = parseFloat(a.EMG) || 0;
           const emgB = parseFloat(b.EMG) || 0;
-          return emgA - emgB;
+          return emgB - emgA;
         });
       }
 
