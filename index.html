@@ -1,75 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Submit EMG Reading</title>
-  <style>
-    body { font-family: Arial; padding: 20px; }
-    form { max-width: 500px; margin: auto; }
-    input, select, button { margin: 10px 0; width: 100%; padding: 10px; }
-	  
-  </style>
+<meta charset="UTF-8">
+<title>Submit EMG Reading</title>
+<style>
+body { font-family: Arial; padding: 20px; }
+form { max-width: 500px; margin: auto; }
+input, select, button { margin: 10px 0; width: 100%; padding: 10px; }
+
+</style>
 </head>
 <body style="background-image: url('db.png')">
-	<header style="display: flex; justify-content: space-between; align-items: center; background-color: white; padding: 10px 20px; margin-bottom: 30px;">
-  <img src="pml.png" alt="Precision Muscle League" style="height: 60px;">
-  <img src="logo.png" alt="JOGO Logo" style="height: 60px;"></header>
-  <!--<h2>Precision Muscle League Scoreboard</h2>-->
-  <form id="emgForm">
-    <input type="text" id="DrName" placeholder="Dr. Name" required />
-  <!--  <input type="text" id="specialty" placeholder="Specialty" required />-->
-	   <select id="Speciality" style="height: 40px; width: 525px" required>
-      <option value="">Specialty</option>
-      <option value="Urologist">Urologist</option>
-      <option value="Urogynecologist">Urogynecologist</option>
-		   <option value="Others">Others</option>
-    </select>
-     <input type="text" id="SSMName" placeholder="SSM Name" required />
-    <input type="number" id="EMG" placeholder="EMG Reading" required />
-    <select id="Region" style="height: 40px; width: 525px" required>
-      <option value="">Region</option>
-      <option value="Chennai">Chennai</option>
-      <option value="Delhi">Delhi</option>
-      <option value="Mumbai">Mumbai</option>
-      <option value="Banglore">Banglore</option>
-    </select>
-    <button type="submit" style="color: black; font-size: 20px; background-color: gold">Submit</button>
-	 
-  </form>
+<header style="display: flex; justify-content: space-between; align-items: center; background-color: white; padding: 10px 20px; margin-bottom: 30px;">
+<img src="pml.png" alt="Precision Muscle League" style="height: 60px;">
+<img src="logo.png" alt="JOGO Logo" style="height: 60px;"></header>
+<!--<h2>Precision Muscle League Scoreboard</h2>-->
+<form id="emgForm">
+<input type="text" id="DrName" placeholder="Dr. Name" required />
+<!-- <input type="text" id="specialty" placeholder="Specialty" required />-->
+<select id="Speciality" style="height: 40px; width: 525px" required>
+<option value="">Specialty</option>
+<option value="Urologist">Urologist</option>
+<option value="Urogynecologist">Urogynecologist</option>
+<option value="Others">Others</option>
+</select>
+<input type="text" id="SSMName" placeholder="SSM Name" required />
+<input type="number" id="EMG" placeholder="EMG Reading" required />
+<select id="Region" style="height: 40px; width: 525px" required>
+<option value="">Region</option>
+<option value="Chennai">Chennai</option>
+<option value="Delhi">Delhi</option>
+<option value="Mumbai">Mumbai</option>
+<option value="Banglore">Banglore</option>
+</select>
+<button type="submit" style="color: black; font-size: 20px; background-color: gold">Submit</button>
+
+</form>
 <script>
-    document.getElementById("emgForm").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const form = e.target;
-      const data = {
-        DrName: form.DrName.value,
-        Speciality: form.Speciality.value,
-        SSMName: form.SSMName.value,
-        EMG: parseFloat(form.EMG.value),
-        Region: form.Region.value,
-        Timestamp: new Date().toLocaleString()
-      };
+document.getElementById("emgForm").addEventListener("submit", async function (e) {
+e.preventDefault();
+const form = e.target;
+const data = {
+DrName: form.DrName.value,
+Speciality: form.Speciality.value,
+SSMName: form.SSMName.value,
+EMG: parseFloat(form.EMG.value),
+Region: form.Region.value,
+Timestamp: new Date().toLocaleString()
+};
 
-      const res = await fetch("https://api.sheetbest.com/sheets/22dbe1df-d212-4027-bc08-6448a6588189", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
+const res = await fetch("https://api.sheetbest.com/sheets/22dbe1df-d212-4027-bc08-6448a6588189", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify(data)
+});
 
-      if (res.ok) {
-        alert("✅ Data submitted!");
-        form.reset();
-		  window.location.href = "Dashboard.html";
-      } else {
-        alert("❌ Submission failed.");
-      }
-    });
-  </script>
+if (res.ok) {
+alert("✅ Data submitted!");
+form.reset();
+window.location.href = "Dashboard.html";
+} else {
+alert("❌ Submission failed.");
+}
+});
+</script>
 
 
 </body>
-	
-	<footer style=" padding: 20px; text-align: right; margin-bottom: 40px;">
-  <img src="images/footer.png" alt="World Continence Week 2025"  style="height: 60px; ">
+
+<footer style=" padding: 20px; text-align: right; margin-bottom: 40px;">
+<img src="images/footer.png" alt="World Continence Week 2025" style="height: 60px; ">
 </footer>
 
 </html>
